@@ -64,7 +64,7 @@ function Freebook() {
         <div>
           <h1 className="font-semibold text-xl pb-2">Free Offered Courses</h1>
           <p>
-          Welcome to KitabAdda, your ultimate destination for all things books! Whether you're a passionate reader, a casual browser, or someone on the hunt for the perfect gift, we've got something for everyone. Explore our extensive collection of titles across every genre, from timeless classics to the latest bestsellers.
+          Welcome to Recollect, your ultimate destination for all things books! Whether you're a passionate reader, a casual browser, or someone on the hunt for the perfect gift, we've got something for everyone. Explore our extensive collection of titles across every genre, from timeless classics to the latest bestsellers.
           </p>
         </div>
 

@@ -45,6 +45,8 @@ function AiCoPilotWidget() {
     );
 
     const userId = user?._id;
+    const token = user?.token;
+
 
     // ==========================
     // SEND MESSAGE
@@ -62,7 +64,7 @@ function AiCoPilotWidget() {
             role: 'user',
             text: input
         };
-
+  
         setMessages((prev) => [
             ...prev,
             userMessage
@@ -99,6 +101,11 @@ function AiCoPilotWidget() {
                         // IMPORTANT:
                         // send pending action back
                         pendingAction,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
                     }
                 );
 
@@ -115,6 +122,11 @@ function AiCoPilotWidget() {
                     {
                         prompt: userMessage.text,
                         userId,
+                    },
+                     {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
                     }
                 );
             }

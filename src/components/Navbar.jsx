@@ -47,6 +47,9 @@ function Navbar() {
       <li>
         <a href="/summarize">Summarize</a>
       </li>
+       <li>
+        <a href="/study-planner">Study Planner</a>
+      </li>
       <li>
         <a href="/dashboard">Your notes and plan</a>
       </li>
@@ -92,7 +95,7 @@ function Navbar() {
                 {navItems}
               </ul>
             </div>
-            <a className=" text-2xl font-bold cursor-pointer">KitabAdda</a>
+            <a className=" text-2xl font-bold cursor-pointer">Recollect</a>
           </div>
           <div className="navbar-end space-x-3">
             <div className="navbar-center hidden lg:flex">

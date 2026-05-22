@@ -28,7 +28,7 @@ function Signup() {
           toast.success("Signup Successfully");
           navigate(from, { replace: true });
         }
-        localStorage.setItem("Users", JSON.stringify(res.data.user));
+       localStorage.setItem("Users", JSON.stringify({ ...res.data.user, token: res.data.token }));
       })
       .catch((err) => {
         if (err.response) {

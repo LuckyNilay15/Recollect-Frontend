@@ -10,6 +10,8 @@ function Summary() {
   
   const user = JSON.parse(localStorage.getItem("Users"));
   const userId = user?._id;
+  const token = user?.token;
+
   // Generate Summary
   const handleSummarize = async () => {
     if (!text.trim()) return;
@@ -25,6 +27,9 @@ function Summary() {
         "http://localhost:4002/chat",
         {
           prompt: prompt,
+        },
+        {
+            headers: { Authorization: `Bearer ${token}` },
         }
       );
 

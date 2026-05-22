@@ -8,7 +8,7 @@ import { useAuth } from "./context/AuthProvider";
 import AiCoPilotWidget from "./components/AiCoPilotWidget";
 import Dashboard from "./components/Dashboard";
 import Summary from "./components/Summary";
-
+import StudyPlanner from "./components/StudyPlanner";
 
 function App() {
   const [authUser, setAuthUser] = useAuth();
@@ -28,6 +28,7 @@ function App() {
           />
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={authUser ? <Dashboard /> : <Navigate to="/signup" />} />
+          <Route path="/study-planner" element={authUser ? <StudyPlanner /> : <Navigate to="/signup" />} />
 
         </Routes>
         <Toaster />
