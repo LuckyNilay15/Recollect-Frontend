@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import SchemaCard from './SchemaCard';
 
 function AiCoPilotWidget() {
 
@@ -157,7 +158,8 @@ function AiCoPilotWidget() {
                     text:
                         response.data.reply ||
                         response.data.message ||
-                        "Done!"
+                        "Done!",
+                    schemaCard: response.data.schemaCard || null,
                 }
             ]);
 
@@ -248,6 +250,9 @@ function AiCoPilotWidget() {
                                 `}
                             >
                                 {msg.text}
+                                {msg.schemaCard && (
+                                    <SchemaCard data={msg.schemaCard.data} />
+                                )}
                             </div>
                         ))}
 
@@ -272,7 +277,9 @@ function AiCoPilotWidget() {
                             <div className="p-2 bg-red-100 dark:bg-red-900 text-xs flex justify-between items-center">
 
                                 <span>
-                                    Pending delete confirmation
+                                    {pendingAction.type === "create_book" 
+                                        ? "Confirm book creation" 
+                                        : "Pending confirmation"}
                                 </span>
 
                                 <button
