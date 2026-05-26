@@ -250,9 +250,40 @@ function AiCoPilotWidget() {
                                 `}
                             >
                                 {msg.text}
-                                {msg.schemaCard && (
-                                    <SchemaCard data={msg.schemaCard.data} />
+                               {msg.schemaCard && (
+                                    <SchemaCard
+                                      entity={msg.schemaCard.entity}
+                                      data={msg.schemaCard.data}
+                                      onConfirm={async (editedData) => {
+                                        try {
+                                          const response = await axios.post(
+                                            'http://localhost:4002/chat',
+                                            {
+                                              approved: true,
+                                              pendingAction: {
+                                                type: "create_entity",
+                                                entity: msg.schemaCard.entity,
+                                                data: editedData,
+                                              },
+                                            },
+                                            { headers: { Authorization: `Bearer ${token}` } }
+                                          );
+                                          setPendingAction(null);
+                                          setMessages(prev => [...prev, {
+                                            role: 'ai',
+                                            text: response.data.message || "Created!"
+                                          }]);
+                                        } catch (err) {
+                                          setMessages(prev => [...prev, {
+                                            role: 'ai',
+                                            text: "Failed to create. Please try again."
+                                          }]);
+                                        }
+                                      }}
+                                      onCancel={() => setPendingAction(null)}
+                                    />
                                 )}
+
                             </div>
                         ))}
 

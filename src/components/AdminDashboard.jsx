@@ -9,6 +9,7 @@ function AdminDashboard({ section }) {
 
   const [roleConfigs, setRoleConfigs] = useState({});
   const [toggleableTools, setToggleableTools] = useState([]);
+  const [adminToggleableTools, setAdminToggleableTools] = useState([]);
   const [auditLogs, setAuditLogs] = useState([]);
   const [books, setBooks] = useState([]);
   const [newBook, setNewBook] = useState({ name: "", title: "", price: 0, category: "", image_url: "", website: "" });
@@ -27,6 +28,7 @@ function AdminDashboard({ section }) {
       });
       setRoleConfigs(res.data.configs);
       setToggleableTools(res.data.toggleableTools);
+      setAdminToggleableTools(res.data.adminToggleableTools || []);
     } catch (err) {
       console.error("Failed to fetch config", err);
     }
@@ -60,6 +62,23 @@ function AdminDashboard({ section }) {
       const res = await axios.post(
         "http://localhost:4002/admin/config/toggle",
         { targetRole: "User", tool, enabled: !currentlyEnabled },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setRoleConfigs(res.data.configs);
+      fetchAuditLogs();
+    } catch (err) {
+      alert("Toggle failed");
+    } finally {
+      setConfigLoading(false);
+    }
+  };
+
+  const handleToggleAdmin = async (tool, currentlyEnabled) => {
+    setConfigLoading(true);
+    try {
+      const res = await axios.post(
+        "http://localhost:4002/admin/config/toggle",
+        { targetRole: "Admin", tool, enabled: !currentlyEnabled },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setRoleConfigs(res.data.configs);
@@ -150,6 +169,30 @@ function AdminDashboard({ section }) {
                   <button
                     key={tool}
                     onClick={() => handleToggle(tool, enabled)}
+                    disabled={configLoading}
+                    className={`p-3 rounded-lg text-xs font-mono border transition-all ${
+                      enabled
+                        ? "bg-green-100 dark:bg-green-900 border-green-500 text-green-700 dark:text-green-300"
+                        : "bg-red-100 dark:bg-red-900 border-red-500 text-red-700 dark:text-red-300"
+                    }`}
+                  >
+                    {tool}
+                    <span className="block mt-1 font-bold">{enabled ? "✓ ON" : "✗ OFF"}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Admin's Own Tools */}
+            <h3 className="text-md font-semibold mt-6 mb-2 text-orange-500">Admin Tools (your own chat tools)</h3>
+            <p className="text-sm text-gray-500 mb-3">Toggle which AI tools are available to you in the chat:</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {adminToggleableTools.map(tool => {
+                const enabled = roleConfigs["Admin"]?.includes(tool);
+                return (
+                  <button
+                    key={`admin-${tool}`}
+                    onClick={() => handleToggleAdmin(tool, enabled)}
                     disabled={configLoading}
                     className={`p-3 rounded-lg text-xs font-mono border transition-all ${
                       enabled
